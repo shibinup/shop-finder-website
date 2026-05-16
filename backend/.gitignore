@@ -1,0 +1,11 @@
+# Environment variables (Sensitive data)
+.env
+.env.local
+
+# Dependency folders
+node_modules/
+
+# Build and log files
+dist/
+build/
+npm-debug.log*
