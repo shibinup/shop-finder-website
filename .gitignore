@@ -1,0 +1,93 @@
+# ===========================
+# Dependencies
+# ===========================
+node_modules/
+.pnp
+.pnp.js
+
+# ===========================
+# Next.js (frontend/)
+# ===========================
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.vercel/
+frontend/next-env.d.ts
+frontend/*.tsbuildinfo
+
+# ===========================
+# Node / Express (backend/)
+# ===========================
+backend/dist/
+backend/build/
+
+# ===========================
+# Environment Variables
+# ===========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+.env.staging
+
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+frontend/.env.local
+
+# ===========================
+# MongoDB / Database
+# ===========================
+*.db
+*.sqlite
+data/db/
+dump/
+backend/dump/
+
+# ===========================
+# Logs
+# ===========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+backend/logs/
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================
+# IDE / Editor (VS Code)
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.suo
+
+# ===========================
+# Testing & Coverage
+# ===========================
+coverage/
+.nyc_output/
+*.lcov
+backend/coverage/
+frontend/coverage/
+
+# ===========================
+# Cache & Misc
+# ===========================
+.cache/
+.turbo/
+.eslintcache
+frontend/.cache/
