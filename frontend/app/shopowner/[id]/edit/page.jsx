@@ -4,8 +4,9 @@ import shops from '../../../dummydb/shopownersDatas';
 import React, { useEffect, useState } from 'react';
 import LocationPicker from '../../components/LocationPicker'
 import dynamic from "next/dynamic";
-import { useParams, useRouter } from 'next/navigation'
+import { notFound, useParams, useRouter } from 'next/navigation'
 import { use } from 'react';
+import Loading from '../../components/loading';
 
 
 
@@ -85,6 +86,9 @@ useEffect(()=>{
     setLoading(false)
 },[currentShop])
 
+
+ if(loading && currentShop===null) return <Loading/>
+ if (currentShop===null) return  notFound()
   return (
     <div className="min-h-screen bg-[#F4F7FF] py-6 px-4 md:py-10 flex justify-center items-start font-sans text-gray-800">
       <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-xl shadow-blue-900/5 w-full max-w-[1300px] overflow-hidden border border-white">
