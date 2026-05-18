@@ -1,24 +1,24 @@
 "use client"
+
 import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
-import { MapPin, ArrowLeft, Store, TrendingUp, Activity, Eye, EyeOff, Menu, User, User as UserIcon } from 'lucide-react';
+import { MapPin, ArrowLeft, Store, TrendingUp, Activity, Eye, EyeOff, Menu, User } from 'lucide-react';
 
-//1.have to make correct signup function
-//2.if needed add google signup now have only email signup
+//1.make correct login function
+// 2.  if neede make login with google 
 
-export default function Signup() {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const[name,setName] = useState("")
   const [email,setEmail] = useState("")
   const[password,setPassword] = useState("")
 
   const router = useRouter()
 
 
-  //making dummy signup function from frontend
-    const handleSignup = (e) => {
+  //dummy login function
+    const handleLogin = (e) => {
     e.preventDefault(); 
     
     // Simulate authentication success
@@ -28,7 +28,6 @@ export default function Signup() {
     router.push("/adminPanel")
      
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-50 lg:bg-[#f4f7fe] flex flex-col lg:items-center lg:justify-center lg:p-8 font-sans">
@@ -144,38 +143,22 @@ export default function Signup() {
           <div className="w-full max-w-[400px]">
             
             {/* Tabs */}
-            <div className="flex border-b-2 border-gray-100 mb-8 w-full">
-              <Link href="/shopownerlogin" className="flex-1 text-center py-3.5 font-semibold text-gray-500 hover:text-gray-800 transition-colors">
+            <div className="flex border-b-2 border-gray-100 mb-10 w-full">
+              <Link href="/shopowner/login" className="flex-1 text-center py-3.5 font-bold text-blue-600 border-b-2 border-blue-600 -mb-[2px]">
                 Login
               </Link>
-              <Link href="/shopownersignup" className="flex-1 text-center py-3.5 font-bold text-blue-600 border-b-2 border-blue-600 -mb-[2px]">
+              <Link href="/shopowner/signup" className="flex-1 text-center py-3.5 font-semibold text-gray-500 hover:text-gray-800 transition-colors">
                 Sign Up
               </Link>
             </div>
 
             <div className="text-center mb-8">
-              <h2 className="text-[28px] font-bold text-gray-900 mb-2">Create an Account</h2>
-              <p className="text-gray-500 text-sm">Join City Finder and grow your business</p>
+              <h2 className="text-[28px] font-bold text-gray-900 mb-2">Welcome Back!</h2>
+              <p className="text-gray-500 text-sm">Login to manage your shop</p>
             </div>
 
-            <form onSubmit={handleSignup}>
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <UserIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input 
-                    type="text" 
-                    placeholder="Enter your full name" 
-                    value={name}
-                    onChange={(e)=>setName(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-600 transition-all text-sm font-medium text-gray-900 placeholder-gray-400"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-4">
+            <form onSubmit={handleLogin} >
+              <div className="mb-5">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -185,15 +168,15 @@ export default function Signup() {
                   </div>
                   <input 
                     type="email" 
-                    placeholder="Enter email " 
+                    placeholder="Enter email" 
                     value={email}
                     onChange={(e)=>setEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-600 transition-all text-sm font-medium text-gray-900 placeholder-gray-400"
+                    className="w-full pl-11 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-600 transition-all text-sm font-medium text-gray-900 placeholder-gray-400"
                   />
                 </div>
               </div>
 
-              <div className="mb-8">
+              <div className="mb-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -203,10 +186,10 @@ export default function Signup() {
                   </div>
                   <input 
                     type={showPassword ? "text" : "password"} 
-                    placeholder="Create a password" 
+                    placeholder="Enter your password" 
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}
-                    className="w-full pl-11 pr-11 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-600 transition-all text-sm font-medium text-gray-900 placeholder-gray-400"
+                    className="w-full pl-11 pr-11 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-600 transition-all text-sm font-medium text-gray-900 placeholder-gray-400"
                   />
                   <button 
                     type="button"
@@ -218,14 +201,20 @@ export default function Signup() {
                 </div>
               </div>
 
+              <div className="flex justify-end mb-6">
+                <Link href="/forgot-password" className="text-sm font-semibold text-blue-600 hover:underline">
+                  Forgot Password?
+                </Link>
+              </div>
+
               <button 
                 type="submit" 
                 className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors mb-8 shadow-[0_4px_14px_0_rgba(37,99,235,0.39)]"
               >
-                Sign Up
+                Login
               </button>
 
-              <div className="relative flex items-center justify-center mb-6">
+              <div className="relative flex items-center justify-center mb-8">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-200"></div>
                 </div>
@@ -244,10 +233,16 @@ export default function Signup() {
                   </svg>
                   <span className="lg:hidden">Continue with </span>Google
                 </button>
+                <button type="button" className="w-full lg:flex-1 flex items-center justify-center gap-2 border border-gray-200 bg-white py-3 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                  <svg className="w-5 h-5 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                  <span className="lg:hidden">Continue with </span>Facebook
+                </button>
               </div>
 
               <p className="text-center text-sm text-gray-600 font-medium">
-                Already have an account? <Link href="/shopownerlogin" className="font-bold text-blue-600 hover:underline">Login</Link>
+                Don't have an account? <Link href="/shopowner/signup" className="font-bold text-blue-600 hover:underline">Sign Up</Link>
               </p>
             </form>
           </div>
