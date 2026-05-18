@@ -9,7 +9,8 @@ import { use } from 'react';
 
 
 
-
+// have to make correct handle save change function 
+// if needed  make location correct
  export default function AddShop() {
 
 
@@ -48,6 +49,10 @@ import { use } from 'react';
    const val = e.target.value
    setCategory(val)
   }
+
+  const handleSave = ()=>{
+    alert("saved succesfully")
+  }
   useEffect(()=>{
   console.log("updated is ",category)
   },[category])
@@ -66,6 +71,11 @@ useEffect(()=>{
                 setSeconsaryPhoneNumber(matchedShop.phoneSecondary)
                 setWEblink(matchedShop.webLink)
                 setDescription(matchedShop.description)
+                const newImage = [...images]
+                newImage[0] = matchedShop.images[0]
+                newImage[1] = matchedShop.images[1]
+                newImage[2] = matchedShop.images[2]
+                setImages(newImage)
                 setCurrentshop(matchedShop)
              }
             
@@ -125,17 +135,6 @@ useEffect(()=>{
                     <p className="text-gray-500 font-medium text-lg">Fill out the details about your shop to get updated.</p>
                 </div>
                 <div className="flex gap-3 w-full md:w-auto">
-                    <button className="flex-1 md:flex-none px-5 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-semibold hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all">
-                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                        Dashboard
-                    </button>
-                
-                    <button  onClick={()=>router.push("/shopowner/signup")} className="flex-1 md:flex-none px-6 py-3 bg-blue-600 rounded-xl text-white font-semibold hover:bg-blue-700 shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 transition-all">
-                        Sign Up
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
-                    </button>
-                
-               
                 </div>
             </div>
         </div>
@@ -243,8 +242,8 @@ useEffect(()=>{
                   </div>
                   
                   <div className="mt-8 hidden lg:block">
-                     <button type="button" className="w-full py-4.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-xl shadow-blue-600/20 transition-all text-lg flex items-center justify-center gap-2">
-                        Create Shop
+                     <button onClick={handleSave}  type="button" className="w-full py-4.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-xl shadow-blue-600/20 transition-all text-lg flex items-center justify-center gap-2">
+                        Save Changes
                      </button>
                   </div>
               </div>
