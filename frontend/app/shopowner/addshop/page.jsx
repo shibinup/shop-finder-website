@@ -1,9 +1,24 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import LocationPicker from '../components/LocationPicker';
+import dynamic from "next/dynamic";
+import { useRouter } from 'next/navigation'
+
+// made a sample location make corerct with backend 
 
  export default function AddShop() {
   // State for image uploads (max 3)
   const [images, setImages] = useState([null, null, null]);
+  const[shopName,setShopName]= useState("")
+  const[email,setEmail] = useState("")
+  const[password,setPassword] = useState("")
+  const[category,setCategory] =useState("Grocery")
+  const[phoneNumber,setPhoneNumber] = useState("")
+  const[secondaryPhoneNumber,setSeconsaryPhoneNumber] = useState("")
+  const[weblink,setWEblink] = useState("")
+  const[description,setDescription] = useState("")
+
+  const router = useRouter()
 
   const handleImageChange = (index, e) => {
     const file = e.target.files[0];
@@ -19,6 +34,14 @@ import React, { useState } from 'react';
     newImages[index] = null;
     setImages(newImages);
   };
+
+  const handleChange = (e)=>{
+   const val = e.target.value
+   setCategory(val)
+  }
+  useEffect(()=>{
+  console.log("updated is ",category)
+  },[category])
 
   return (
     <div className="min-h-screen bg-[#F4F7FF] py-6 px-4 md:py-10 flex justify-center items-start font-sans text-gray-800">
@@ -74,10 +97,13 @@ import React, { useState } from 'react';
                         <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                         Dashboard
                     </button>
-                    <button className="flex-1 md:flex-none px-6 py-3 bg-blue-600 rounded-xl text-white font-semibold hover:bg-blue-700 shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 transition-all">
+                
+                    <button  onClick={()=>router.push("/shopowner/signup")} className="flex-1 md:flex-none px-6 py-3 bg-blue-600 rounded-xl text-white font-semibold hover:bg-blue-700 shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 transition-all">
                         Sign Up
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
                     </button>
+                
+               
                 </div>
             </div>
         </div>
@@ -95,16 +121,16 @@ import React, { useState } from 'react';
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700">Shop Name</label>
-                        <input type="text" placeholder="Shop Name" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
+                        <input type="text"   value={shopName} onChange={(e)=>setShopName(e.target.value)}  placeholder="Shop Name" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
                     </div>
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700">Category</label>
                         <div className="relative">
-                            <select className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none appearance-none font-medium text-gray-800">
-                                <option>Grocery</option>
-                                <option>Clothing</option>
-                                <option>Electronics</option>
-                                <option>Restaurant</option>
+                            <select value={category} onChange={handleChange} className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none appearance-none font-medium text-gray-800">
+                                <option  value={"Grocery"} >Grocery</option>
+                                <option value={"Clothing"}>Clothing</option>
+                                <option  value={"Electronics"} >Electronics</option>
+                                <option value={"Restaurant"}>Restaurant</option>
                             </select>
                             <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
@@ -113,21 +139,27 @@ import React, { useState } from 'react';
                     </div>
                     
                     <div className="space-y-2">
-                        <label className="block text-sm font-bold text-gray-700">Contact Email</label>
-                        <input type="email" placeholder="Enter your email" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
+                        <label className="block text-sm font-bold text-gray-700"> Email</label>
+                        <input type="email"   value={email} onChange={(e)=>setEmail(e.target.value)}  placeholder="Should Enter same of loggd email " className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
                     </div>
+
+                    <div className="space-y-2">
+                        <label className="block text-sm font-bold text-gray-700">password</label>
+                        <input type="password"   value={password} onChange={(e)=>setPassword(e.target.value)}  placeholder="Should same as logged email password" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
+                    </div>
+
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700">Phone Number</label>
-                        <input type="tel" placeholder="+1 (555) 123-4567" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
+                        <input type="tel"   value={phoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)}   placeholder="+91" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
                     </div>
 
                     <div className="space-y-2 md:col-span-2">
                         <label className="block text-sm font-bold text-gray-700">Phone Number (Secondary)</label>
-                        <input type="tel" placeholder="+1 (555) 123-4567" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
+                        <input type="tel"   value={secondaryPhoneNumber} onChange={(e)=>setSeconsaryPhoneNumber(e.target.value)}   placeholder="+91" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
                     </div>
                     <div className="space-y-2 md:col-span-2">
                         <label className="block text-sm font-bold text-gray-700">Website</label>
-                        <input type="url" placeholder="https://" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
+                        <input type="url"  value={weblink} onChange={(e)=>setWEblink(e.target.value)}  placeholder="https://" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-gray-800 placeholder-gray-400" />
                     </div>
                   </div>
 
@@ -170,6 +202,8 @@ import React, { useState } from 'react';
                         <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-md">0/300</span>
                       </div>
                       <textarea 
+                        value={description}
+                        onChange={(e)=>setDescription(e.target.value)}
                         rows="4" 
                         placeholder="Write a short description about your shop..."
                         className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none resize-none font-medium text-gray-800 placeholder-gray-400"
@@ -254,6 +288,8 @@ import React, { useState } from 'react';
                 </div>
 
                 {/* Business Hours  are not added*/}
+
+                <LocationPicker/>
 
 
                 <div className="mt-8 lg:hidden block">
