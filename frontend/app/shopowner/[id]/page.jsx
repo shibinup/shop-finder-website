@@ -1,7 +1,7 @@
 "use client"
 import shops from '../../dummydb/shopownersDatas';
 import React, { useEffect, useState } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { 
   MapPin, Bell, User, ArrowLeft, Star, Share2, 
   Phone, Globe, Wifi, Leaf, Truck, CreditCard, 
@@ -19,6 +19,7 @@ export default  function ShopDetails({ params }) {
   const[loading,setLoading] = useState(true)
 
   const[currentShop,setCurrentshop] = useState(null)
+  const router = useRouter()
    
  const { id } = use(params)
  console.log("params is ",id)
@@ -55,8 +56,7 @@ if(currentShop===null) return notFound()
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-800">
           <a href="#" className="hover:text-blue-600">Home</a>
-          <a href="#" className="hover:text-blue-600">Explore</a>
-          <a href="#" className="hover:text-blue-600">Popular Cities</a>
+          <button onClick={()=>router.push(`/shopowner/${id}/edit`)}><a  className="hover:text-blue-600">Edit Details</a></button>
           <a href="#" className="hover:text-blue-600">Help</a>
         </div>
         <div className="flex items-center gap-4 text-slate-400">
