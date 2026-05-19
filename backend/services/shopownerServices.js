@@ -3,6 +3,7 @@ import User from "../models/userSchema.js";
 import { generateOTP } from "../utilities/otpgeneration.js";
 import { sendOTPEmail } from "../utilities/sendOtp.js";
 import bcrypt from "bcryptjs";
+import generateToken from "../utilities/generateJwt.js";
 
 const shopownerSignup = async(req,res)=>{
     console.log("called")
@@ -117,6 +118,17 @@ const verifyOTP = async (req, res) => {
       password: password,
     });
     await Tempuser.deleteOne({ _id: user._id })
+
+     const token = generateToken(newUser._id);
+      console.log("token generated",token)
+
+      res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
 
   return res.json({
     success:true,

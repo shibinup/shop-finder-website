@@ -10,4 +10,5 @@ const test=(req,res)=>{
 router.post("/signup",shopownerSignup)
 router.post("/signup/verifyotp",verifyOTP)
 
+
 export default router
