@@ -19,7 +19,7 @@ const tempuserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 30 
+    expires: 30000 
   },
   isVerified: {
       type: Boolean,
@@ -37,7 +37,8 @@ tempuserSchema.pre('save', async function () {
     if (!this.isModified('password')) return; 
 
     const salt = await bcrypt.genSalt(10); 
-    this.password = await bcrypt.hash(this.password, salt); 
+    this.password = await bcrypt.hash(this.password, salt);
+    console.log("first hashed",this.password) 
 });
 
 

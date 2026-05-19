@@ -44,6 +44,8 @@ const shopownerSignup = async(req,res)=>{
 
   
     const otp =  generateOTP()
+    console.log("pass otp",otp)
+    console.log("type of original",typeof otp)
     const otpExpiry = Date.now() + 10 * 60 * 1000; // 10 min
 
     
@@ -52,6 +54,7 @@ const shopownerSignup = async(req,res)=>{
       name,
       email,
       password: password,
+      otp:otp
     });
 
     //here sending otp
@@ -81,19 +84,27 @@ const shopownerSignup = async(req,res)=>{
 
 const verifyOTP = async (req, res) => {
    
-
+      console.log("verify otp called ")
   try {
         const { email,password, otp } = req.body;
+        console.log("enetred otp",otp)
+        console.log("type of enetred otp is", typeof otp)
         
          const salt = await bcrypt.genSalt(10); 
-          const hashedPassword = await bcrypt.hash(password, salt); 
-         const user = await Tempuser.findOne({ email:email,password:hashedPassword });
+         
+          
+         const user = await Tempuser.findOne({ email:email});
+       
 
   if (!user) return res.json({ success:false,message: "User not found" });
+  const isMatch = await bcrypt.compare(password,user.password);
+  if (!isMatch) {
+    return res.status(401).json({ success:false , message: " password" });
+}
 
-
-  if (user.otp !== otp) {
-    return res.json({ message: "Wrong OTP" });
+   console.log("user.otp is ",user.otp)
+  if (Number(user.otp) !== Number(otp)) {
+    return res.json({ success:false,message: "Wrong OTP" });
   }
 
   user.isVerified = true;
@@ -109,7 +120,7 @@ const verifyOTP = async (req, res) => {
 
   return res.json({
     success:true,
-    message: "Account verified successfully ",
+    message: "Account verified and signup successfully ",
   });
   } catch (error) {
     console.log("shibu have errror in verify otp",error)
