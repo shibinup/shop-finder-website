@@ -1,8 +1,9 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
+import express from 'express'
+import dotenv from "dotenv"
+import cors from "cors";
 
-const connectDB = require("./config/db");
+import connectDB from "./config/db.js";
+import shopownerRoute from "./routes/shopownerRoutes.js";
 
 dotenv.config();
 
@@ -12,6 +13,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/shopowner",shopownerRoute)
 
 app.get("/", (req, res) => {
   res.send("API Running...");
