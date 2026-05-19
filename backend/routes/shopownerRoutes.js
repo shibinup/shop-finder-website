@@ -1,5 +1,5 @@
 import express from 'express'
-import { shopownerSignup } from '../services/shopownerServices.js';
+import { shopownerSignup, verifyOTP } from '../services/shopownerServices.js';
 const router = express.Router();
 
 
@@ -8,5 +8,6 @@ const test=(req,res)=>{
 }
 
 router.post("/signup",shopownerSignup)
+router.post("/verifyotp",verifyOTP)
 
 export default router

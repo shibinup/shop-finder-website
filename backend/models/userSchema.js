@@ -20,16 +20,12 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
 
+
+    });
+  
 // here hashing password
-userSchema.pre('save', async function () { 
-    
-    if (!this.isModified('password')) return; 
 
-    const salt = await bcrypt.genSalt(10); 
-    this.password = await bcrypt.hash(this.password, salt); 
-});
 
 
 const User = mongoose.model("User", userSchema);
