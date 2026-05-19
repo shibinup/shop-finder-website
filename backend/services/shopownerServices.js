@@ -115,7 +115,7 @@ const verifyOTP = async (req, res) => {
    const newUser = await User.create({
       name:user.name,
       email,
-      password: password,
+      password: user.password,
     });
     await Tempuser.deleteOne({ _id: user._id })
 
@@ -147,4 +147,68 @@ const verifyOTP = async (req, res) => {
 };
 
 
-export { shopownerSignup ,verifyOTP }
+const shopownerLogin =async(req,res)=>{
+
+     try {
+
+        const{ email , password } = req.body
+
+
+         const user = await User.findOne({ email });
+
+        if (!user) {
+         return res.status(400).json({
+           success: false,
+           message: "User not found",
+      });
+    }
+
+    
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+      const token = generateToken(user._id);
+
+      res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+
+      token,
+    });
+
+
+     } catch (error) {
+      res.status(400).json({
+        success: false,
+        message : error
+      })
+     }
+
+
+
+}
+
+
+export { shopownerSignup ,verifyOTP,shopownerLogin }
