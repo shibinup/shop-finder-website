@@ -241,7 +241,7 @@ const addShop = async(req,res)=>{
 
 
    // checking already have a shop 
-   const shopexisting = Shop.findOne({shopOwnerId:req.user._id})
+   const shopexisting = await Shop.findOne({shopOwnerId:req.user._id})
    if(shopexisting){
           return res.status(400).json({
            success: false,
@@ -285,7 +285,7 @@ const addShop = async(req,res)=>{
     } catch (error) {
         return res.status(400).json({
         success: false,
-        message: error
+        message: error,
       });
     }
 
@@ -316,42 +316,80 @@ const getMyshop =async(req,res)=>{
              images:shop.images,
              success:true,
              message : "this is your shop"
-
-
-
       })
   } catch (error) {
     console.log("get my shop error",error)
      return res.status(400).json({
         success: false,
-        message: error
+        message: error,
       });
   }
 }
 
+const updateShop=async(req,res)=>{
+  console.log("update shop called ")
+  
+  try {
+      const{images,shopName,category,phoneNumber,secondaryPhoneNumber,weblink,description} = req.body
+
+      const updatedshop = await Shop.findOneAndUpdate(
+  {
+    shopOwnerId: req.user._id,
+  },
+  {
+    $set: {
+      images,
+      shopName,
+      category,
+      phoneNumber,
+      secondaryPhoneNumber,
+      weblink,
+      description,
+    },
+  },
+  {
+    returnDocument: "after",
+    runValidators: true,
+  }
+);
 
 
-export { shopownerSignup ,verifyOTP,shopownerLogin,addShop,getMyshop }
+    if (!updatedshop) {
+        return res.status(404).json({ 
+          success: false, message: "Shop not found so not updated ",
+         });
+    }
+
+  
+
+    return res.status(200).json({
+      success: true,
+      message: updatedshop
+    });
+
+  } catch (error) {
+    console.log("update shop error",error)
+     return res.status(400).json({
+        success: false,
+        message: error,
+      });
+  }
+
+}
+
+
+export { shopownerSignup ,verifyOTP,shopownerLogin,addShop,getMyshop,updateShop}
 
 
 /* 
 
-            {
-    id: 1,
-    shopName: "Tech World",
-    phonePrimary: "+91 9876543210",
-    phoneSecondary: "+91 9123456780",
-    webLink: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
-    description:
-      "Electronics and gadgets shop with mobiles, laptops, and accessories.",
-    images: [
-      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-      "https://images.unsplash.com/photo-1522199710521-72d69614c702",
-    ],
-    email: "techworld@gmail.com",
-    address: "MG Road, Kochi, Kerala",
-  }
+     const [images, setImages] = useState([null, null, null]);
+     const[shopName,setShopName]= useState("")
+     const[category,setCategory] =useState("Grocery")
+     const[phoneNumber,setPhoneNumber] = useState("")
+     const[secondaryPhoneNumber,setSeconsaryPhoneNumber] = useState("")
+     const[weblink,setWEblink] = useState("")
+     const[description,setDescription] = useState("")
 
 
 */
