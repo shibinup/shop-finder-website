@@ -4,6 +4,7 @@ import { generateOTP } from "../utilities/otpgeneration.js";
 import { sendOTPEmail } from "../utilities/sendOtp.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utilities/generateJwt.js";
+import Shop from "../models/shopSchema.js";
 
 const shopownerSignup = async(req,res)=>{
     console.log("called")
@@ -177,6 +178,7 @@ const shopownerLogin =async(req,res)=>{
     }
 
       const token = generateToken(user._id);
+      console.log("token is   ==",token)
 
       res.cookie("token", token, {
       httpOnly: true,
@@ -211,4 +213,99 @@ const shopownerLogin =async(req,res)=>{
 }
 
 
-export { shopownerSignup ,verifyOTP,shopownerLogin }
+const addShop = async(req,res)=>{
+   
+    try {
+      const { images,shopName,email,password,category,phoneNumber,secondaryPhoneNumber,weblink,description,city } = req.body;
+      const user =await User.findOne({email})
+      //here checking enetred email is same in time of login
+      if (!user) {
+          return res.status(400).json({
+           success: false,
+           message: "Enter same email as you enetered",
+      })};
+
+          
+
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+
+   // checking already have a shop 
+   const shopexisting = Shop.findOne({shopOwnerId:req.user._id})
+   if(shopexisting){
+          return res.status(400).json({
+           success: false,
+           message: "you have an shop with same email",
+      })};
+
+
+    const shopOwnerId = req.user.id
+
+      const newShop = await Shop.create({
+        shopOwnerId:req.user._id,
+        images,
+        shopName,
+        email,
+        password,
+        category,
+        phoneNumber,
+        secondaryPhoneNumber,
+        weblink,
+        description,
+        city
+
+    })
+
+    return res.status(201).json({
+
+        shopName,
+        email,
+        password,
+        category,
+        phoneNumber,
+        secondaryPhoneNumber,
+        weblink,
+        description,
+        city,
+        success:true,
+        meassage : "shop created succesfully"
+
+    })
+
+    } catch (error) {
+        return res.status(400).json({
+        success: false,
+        message: error
+      });
+    }
+
+}
+
+
+export { shopownerSignup ,verifyOTP,shopownerLogin,addShop }
+
+
+/* 
+
+          const [images, setImages] = useState([null, null, null]);
+          const[shopName,setShopName]= useState("")
+          const[email,setEmail] = useState("")
+          const[password,setPassword] = useState("")
+          const[category,setCategory] =useState("Grocery")
+          const[phoneNumber,setPhoneNumber] = useState("")
+          const[secondaryPhoneNumber,setSeconsaryPhoneNumber] = useState("")
+          const[weblink,setWEblink] = useState("")
+          const[description,setDescription] = useState("")
+
+
+*/
