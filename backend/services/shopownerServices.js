@@ -292,20 +292,66 @@ const addShop = async(req,res)=>{
 }
 
 
-export { shopownerSignup ,verifyOTP,shopownerLogin,addShop }
+const getMyshop =async(req,res)=>{
+  console.log("get my shop called ")
+  try {
+    const user_id = req.user._id
+    const shop= await Shop.findOne({shopOwnerId:req.user._id})
+    if(!shop){
+          return res.status(400).json({
+           success: false,
+           message: "this shop doesnot exist",
+      })};
+
+      return res.status(201).json({
+
+            name : shop.name,
+           email :shop.email,
+           category :shop.category,
+           phoneNumber : shop.phoneNumber,
+            secondaryPhoneNumber :shop.secondaryPhoneNumber,
+            weblink : shop.weblink,
+            description :shop.description,
+            city :shop.city,
+             images:shop.images,
+             success:true,
+             message : "this is your shop"
+
+
+
+      })
+  } catch (error) {
+    console.log("get my shop error",error)
+     return res.status(400).json({
+        success: false,
+        message: error
+      });
+  }
+}
+
+
+
+export { shopownerSignup ,verifyOTP,shopownerLogin,addShop,getMyshop }
 
 
 /* 
 
-          const [images, setImages] = useState([null, null, null]);
-          const[shopName,setShopName]= useState("")
-          const[email,setEmail] = useState("")
-          const[password,setPassword] = useState("")
-          const[category,setCategory] =useState("Grocery")
-          const[phoneNumber,setPhoneNumber] = useState("")
-          const[secondaryPhoneNumber,setSeconsaryPhoneNumber] = useState("")
-          const[weblink,setWEblink] = useState("")
-          const[description,setDescription] = useState("")
+            {
+    id: 1,
+    shopName: "Tech World",
+    phonePrimary: "+91 9876543210",
+    phoneSecondary: "+91 9123456780",
+    webLink: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+    description:
+      "Electronics and gadgets shop with mobiles, laptops, and accessories.",
+    images: [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+      "https://images.unsplash.com/photo-1522199710521-72d69614c702",
+    ],
+    email: "techworld@gmail.com",
+    address: "MG Road, Kochi, Kerala",
+  }
 
 
 */
