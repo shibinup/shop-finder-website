@@ -5,6 +5,7 @@ import { sendOTPEmail } from "../utilities/sendOtp.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utilities/generateJwt.js";
 import Shop from "../models/shopSchema.js";
+import uploadToImgBB from "../utilities/uploadToImgbb.js";
 
 const shopownerSignup = async(req,res)=>{
     console.log("called")
@@ -214,7 +215,7 @@ const shopownerLogin =async(req,res)=>{
 
 
 const addShop = async(req,res)=>{
-   
+   console.log("main api is called")
     try {
       const { images,shopName,email,password,category,phoneNumber,secondaryPhoneNumber,weblink,description,city } = req.body;
       const user =await User.findOne({email})
@@ -249,11 +250,54 @@ const addShop = async(req,res)=>{
       })};
 
 
+
+      // Uploaded files
+        const files = req.files;
+        
+
+
+        // Validation
+        if (!files || files.length === 0) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Please upload at least one image",
+            });
+        }
+
+
+        // Max 3 validation
+        if (files.length > 3) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Maximum 3 images allowed",
+            });
+        }
+
+
+        // Upload all images
+        const uploadedImages = [];
+
+        for (const file of files) {
+            
+            const { url, display_url, delete_url } = await uploadToImgBB(file);
+
+
+            uploadedImages.push({ url,
+  displayUrl: display_url,
+  deleteUrl: delete_url,});
+        }
+
+
+
+
+
     const shopOwnerId = req.user.id
 
       const newShop = await Shop.create({
         shopOwnerId:req.user._id,
-        images,
+        images:uploadedImages,
         shopName,
         email,
         password,
@@ -283,6 +327,7 @@ const addShop = async(req,res)=>{
     })
 
     } catch (error) {
+      console.log("shiii",error)
         return res.status(400).json({
         success: false,
         message: error,

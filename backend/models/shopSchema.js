@@ -46,10 +46,13 @@ description:{
     type :String,
     required:true
 },
-images:{
-    type:[String],
-    required:true
-},
+images: [
+  {
+    url: { type: String, required: true },
+    displayUrl: { type: String, required: true },
+    deleteUrl: { type: String, required: true },
+  },
+],
   createdAt: {
     type: Date,
     default: Date.now,
