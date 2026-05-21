@@ -90,6 +90,7 @@ const verifyOTP = async (req, res) => {
       console.log("verify otp called ")
   try {
         const { email,password, otp } = req.body;
+        console.log("eee",email,password,otp)
         console.log("enetred otp",otp)
         console.log("type of enetred otp is", typeof otp)
         
@@ -99,7 +100,7 @@ const verifyOTP = async (req, res) => {
          const user = await Tempuser.findOne({ email:email});
        
 
-  if (!user) return res.json({ success:false,message: "User not found" });
+  if (!user) return res.status(400).json({ success:false,message: "User not found" });
   const isMatch = await bcrypt.compare(password,user.password);
   if (!isMatch) {
     return res.status(401).json({ success:false , message: " password" });
@@ -107,12 +108,9 @@ const verifyOTP = async (req, res) => {
 
    console.log("user.otp is ",user.otp)
   if (Number(user.otp) !== Number(otp)) {
-    return res.json({ success:false,message: "Wrong OTP" });
+    return res.status(400).json({ success:false,message: "Wrong OTP" });
   }
 
-  user.isVerified = true;
-  user.otp = null;
-  
   
    const newUser = await User.create({
       name:user.name,
@@ -127,10 +125,10 @@ const verifyOTP = async (req, res) => {
       res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-
+   console.log("cookie set")
 
   return res.json({
     success:true,
@@ -184,7 +182,7 @@ const shopownerLogin =async(req,res)=>{
       res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
