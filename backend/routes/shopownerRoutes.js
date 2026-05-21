@@ -14,7 +14,7 @@ router.post("/signup/verifyotp",verifyOTP)
 router.post("/login",shopownerLogin)
 router.post("/addShop",protect,upload.array("images", 3),addShop)
 router.get("/getMyshop",protect,getMyshop)
-router.patch("/updateShop",protect,updateShop)
+router.patch("/updateShop",protect,upload.array("images",3),updateShop)
 
 
 export default router

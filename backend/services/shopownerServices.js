@@ -371,56 +371,47 @@ const getMyshop =async(req,res)=>{
   }
 }
 
-const updateShop=async(req,res)=>{
-  console.log("update shop called ")
-  
+const updateShop = async (req, res) => {
   try {
-      const{images,shopName,category,phoneNumber,secondaryPhoneNumber,weblink,description} = req.body
+    console.log("try from update shop called")
+    const { shopName, category, phoneNumber, secondaryPhoneNumber, weblink, description } = req.body;
+    const isChangedImages = req.body.isChanged === true || req.body.isChanged === "true";
 
-      const updatedshop = await Shop.findOneAndUpdate(
-  {
-    shopOwnerId: req.user._id,
-  },
-  {
-    $set: {
-      images,
-      shopName,
-      category,
-      phoneNumber,
-      secondaryPhoneNumber,
-      weblink,
-      description,
-    },
-  },
-  {
-    returnDocument: "after",
-    runValidators: true,
-  }
-);
+    const existingShop = await Shop.findOne({ shopOwnerId: req.user._id });
+    if (!existingShop) return res.status(404).json({ success: false, message: "Shop not found" });
 
+    let updatedImages = existingShop.images;
 
-    if (!updatedshop) {
-        return res.status(404).json({ 
-          success: false, message: "Shop not found so not updated ",
-         });
+    if (isChangedImages) {
+      console.log("is changed imaged called")
+      const files = req.files || [];
+
+      // 1. Upload new images first
+      const newImages = await Promise.all(
+        files.map(async (file) => {
+          const { url, display_url, delete_url } = await uploadToImgBB(file);
+          return { url, displayUrl: display_url, deleteUrl: delete_url };
+        })
+      );
+
+      // 2. Delete old images only after successful uploads
+      await Promise.allSettled(
+        existingShop.images.map((item) => fetch(item.deleteUrl))
+      );
+
+      updatedImages = newImages;
     }
 
-  
+    console.log("existing shop.images",existingShop.images)
+    existingShop.set({ shopName, category, phoneNumber, secondaryPhoneNumber, weblink, description, images: updatedImages });
+    const updatedShop = await existingShop.save();
 
-    return res.status(200).json({
-      success: true,
-      message: updatedshop
-    });
-
+    return res.status(200).json({ success: true, message: "Shop updated successfully", data: updatedShop });
   } catch (error) {
-    console.log("update shop error",error)
-     return res.status(400).json({
-        success: false,
-        message: error,
-      });
+    console.error("updateShop error:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" }); // Don't leak error.message to client
   }
-
-}
+};
 
 
 export { shopownerSignup ,verifyOTP,shopownerLogin,addShop,getMyshop,updateShop}

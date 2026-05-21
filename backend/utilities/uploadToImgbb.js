@@ -4,14 +4,13 @@ const uploadToImgBB = async (file) => {
     console.log("uplaod to imgbb called ")
     try {
             console.log('try called fro to gbb')
-            console.log("immgg apikey",process.env.IMGBB_API_KEY)
         // Convert image buffer to base64
         const base64Image = file.buffer.toString("base64");
         console.log("fiel.buffer is ",file.buffer)
         const data = new URLSearchParams();
     data.append("image", base64Image);
         
-
+        
 
         // Upload to ImgBB
         const response = await axios.post(
