@@ -92,7 +92,7 @@ if(currentShop===null) return null
         {/* Header Card (Overlapping Hero) */}
         <div className="px-4 md:px-12 -mt-16 relative z-10">
           <div className="bg-white/80 backdrop-blur-xl rounded-[2rem] pt-6 pb-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center max-w-3xl mx-auto border border-white/50">
-            <h1 className="text-[28px] font-bold text-slate-900 mb-2">{currentShop.shopName}</h1>
+            <h1 className="text-[40px] font-bold text-slate-900 mb-2">{currentShop.shopName}</h1>
             <div className="flex items-center justify-center gap-2 text-sm text-slate-500 mb-6">
               <div className="flex text-yellow-400">
                 {[...Array(5)].map((_, i) => (
@@ -101,7 +101,7 @@ if(currentShop===null) return null
               </div>
               <span className="font-bold text-slate-700">4.8</span>
               <span className="text-slate-300">|</span>
-              <span>520 reviews</span>
+              <span className='text-2xl font-bold text-blue-600 '>{currentShop.category}</span>
             </div>
 
             {/* Tabs */}
@@ -165,7 +165,7 @@ if(currentShop===null) return null
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 text-slate-600 text-sm font-medium">
                   <Phone className="w-5 h-5 text-slate-400" />
-                  <span>{currentShop.phonePrimary}</span>
+                  <span>{currentShop.phoneNumber}</span>
                 </div>
                 <button className="bg-[#4285F4] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-600 transition-colors shadow-md shadow-blue-500/20 flex items-center gap-2">
                   Call <ArrowLeft className="w-4 h-4 rotate-[135deg]" />

@@ -15,6 +15,12 @@ import Loading from '../../components/loading';
  export default function EditShop() {
 
 
+
+    useEffect(()=>{
+            
+
+    })
+
     const [currentShop,setCurrentshop] = useState(null)
   // State for image uploads (max 3)
   const [images, setImages] = useState([null, null, null]);
@@ -58,13 +64,38 @@ import Loading from '../../components/loading';
   console.log("updated is ",category)
   },[category])
 
+  
+
 
 useEffect(()=>{
 
-    const fetchData = ()=>{
+    const fetchData =async ()=>{
         setLoading(true)
-             const matchedShop = shops.find(shop => shop.id === Number(params.id));
-             console.log("matched shop is",matchedShop)
+            const res= await("local")
+
+            
+            try {
+                setLoading(true)
+              const res = await fetch(`http://localhost:4000/api/shopowner/getMyshop`, {
+              credentials: "include", // 👈 This sends cookies 
+          });
+
+          const data = await res.json()
+          if(data.shop){
+                setShopName(data.shop.shopName)
+                setCategory(data.shop.category)
+          }else{
+            router.push("/shopowner/login")
+            return
+          }
+
+        const data = await res.json()
+            } catch (error) {
+                
+            }
+
+
+
              if(matchedShop && currentShop===null){
                 
                 setShopName(matchedShop.shopName)
