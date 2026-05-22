@@ -100,7 +100,7 @@ export default function AddShop() {
       }
 
       console.log(data);
-      router.push("/shopowner/getMyshop");
+      router.push("/shopowner");
     } catch (error) {
       console.log(error);
     }
