@@ -213,9 +213,10 @@ const shopownerLogin =async(req,res)=>{
 
 
 const addShop = async(req,res)=>{
-   console.log("main api is called")
+   console.log("add shop maain api is called")
     try {
       const { images,shopName,email,password,category,phoneNumber,secondaryPhoneNumber,weblink,description,city } = req.body;
+      console.log("im from try of add shop and ", images,shopName,email,password,category,phoneNumber,secondaryPhoneNumber,weblink,description,city)
       const user =await User.findOne({email})
       //here checking enetred email is same in time of login
       if (!user) {
@@ -307,6 +308,7 @@ const addShop = async(req,res)=>{
         city
 
     })
+    console.log("shibuu added shop is perfect ok")
 
     return res.status(201).json({
 
@@ -325,7 +327,7 @@ const addShop = async(req,res)=>{
     })
 
     } catch (error) {
-      console.log("shiii",error)
+      console.log("shiii eror from add shop",error)
         return res.status(400).json({
         success: false,
         message: error,
