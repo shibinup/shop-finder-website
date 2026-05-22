@@ -23,7 +23,7 @@ export default function Login() {
     
     // Simulate authentication success
     try {
-   const res = await fetch("http://localhost:4000/api/shopowner/login", { 
+   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shopowner/login`, { 
   method: "POST", 
   headers: { 
     "Content-Type": "application/json", 

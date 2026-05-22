@@ -29,7 +29,7 @@ useEffect(()=>{
     const fetchShop= async()=>{
         try {
           setLoading(true)
-          const res = await fetch(`http://localhost:4000/api/shopowner/getMyshop`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shopowner/getMyshop`, {
       credentials: "include", // 👈 This sends cookies
           });
         const data = await res.json()

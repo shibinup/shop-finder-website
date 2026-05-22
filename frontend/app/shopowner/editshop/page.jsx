@@ -81,7 +81,7 @@ export default function EditShop() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/shopowner/updateShop", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shopowner/updateShop`, {
         method: "PATCH",
         credentials: "include",
         body: formData,
@@ -106,7 +106,7 @@ export default function EditShop() {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`http://localhost:4000/api/shopowner/getMyshop`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shopowner/getMyshop`, {
           credentials: "include",
         });
 

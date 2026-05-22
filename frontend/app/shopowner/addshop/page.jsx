@@ -82,7 +82,7 @@ export default function AddShop() {
 
 
       const res = await fetch(
-        "http://localhost:4000/api/shopowner/addShop",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/shopowner/addShop`,
         {
           method: "POST",
           body: formData,  

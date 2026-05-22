@@ -25,7 +25,7 @@ export default function Signup() {
   try {
     localStorage.setItem("email",email)
     localStorage.setItem("password",password)
-    const res = await fetch("http://localhost:4000/api/shopowner/signup", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shopowner/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

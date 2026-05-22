@@ -50,7 +50,7 @@ export default function OtpVerifyPage() {
       const password = localStorage.getItem("password")
       localStorage.clear()
 
-const res = await fetch("http://localhost:4000/api/shopowner/signup/verifyotp", { 
+const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shopowner/signup/verifyotp`, { 
   method: "POST", 
   headers: { 
     "Content-Type": "application/json", 
