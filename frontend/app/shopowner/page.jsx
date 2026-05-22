@@ -67,7 +67,7 @@ if(currentShop===null) return null
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-800">
           <a href="#" className="hover:text-blue-600">Home</a>
-          <button onClick={()=>router.push(`/shopowner/${id}/edit`)}><a  className="hover:text-blue-600">Edit Details</a></button>
+          <button onClick={()=>router.push(`/shopowner/editshop`)}><a  className="hover:text-blue-600">Edit Details</a></button>
           <a href="#" className="hover:text-blue-600">Help</a>
         </div>
         <div className="flex items-center gap-4 text-slate-400">
