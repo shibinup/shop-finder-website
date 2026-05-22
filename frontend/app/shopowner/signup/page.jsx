@@ -18,16 +18,39 @@ export default function Signup() {
 
 
   //making dummy signup function from frontend
-    const handleSignup = (e) => {
-    e.preventDefault(); 
+   const handleSignup = async (e) => {
+  e.preventDefault();
+
+
+  try {
+    localStorage.setItem("email",email)
+    localStorage.setItem("password",password)
+    const res = await fetch("http://localhost:4000/api/shopowner/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Signup failed");
+    }
+
     
-    // Simulate authentication success
-    localStorage.setItem('isLoggedIn', 'true');
-    
-    // Redirect to home page
-    router.push("/adminPanel")
-     
-  };
+    // redirect after success
+    router.push("/shopowner/signup/verifyotp");
+
+  } catch (err) {
+    console.log("error message is ",err.message)
+  } 
+};
   
 
   return (

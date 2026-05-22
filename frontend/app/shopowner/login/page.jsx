@@ -18,17 +18,37 @@ export default function Login() {
 
 
   //dummy login function
-    const handleLogin = (e) => {
+    const handleLogin = async(e) => {
     e.preventDefault(); 
     
     // Simulate authentication success
-    localStorage.setItem('isLoggedIn', 'true');
-    
-    // Redirect to home page
-    router.push("/adminPanel")
+    try {
+   const res = await fetch("http://localhost:4000/api/shopowner/login", { 
+  method: "POST", 
+  headers: { 
+    "Content-Type": "application/json", 
+  }, 
+  credentials: "include", // Allows cookies to be sent and received
+  body: JSON.stringify({ email, password }), 
+});
+
+    const data = await res.json();
+
+    // If login failed
+    if (!res.ok) {
+      throw new Error(data.message || "Login failed");
+    }
+
+  console.log("respond from frontend is ",data)
+
+    // Redirect
+    router.push("/shopowner/3")
+
+  } catch (error) {
+    console.log(error);
      
   };
-
+    }
   return (
     <div className="min-h-screen bg-gray-50 lg:bg-[#f4f7fe] flex flex-col lg:items-center lg:justify-center lg:p-8 font-sans">
       
