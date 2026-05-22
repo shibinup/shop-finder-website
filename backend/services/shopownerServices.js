@@ -348,7 +348,7 @@ const getMyshop =async(req,res)=>{
 
       return res.status(201).json({
 
-            name : shop.name,
+           shop :{ name : shop.name,
            email :shop.email,
            category :shop.category,
            phoneNumber : shop.phoneNumber,
@@ -358,7 +358,7 @@ const getMyshop =async(req,res)=>{
             city :shop.city,
              images:shop.images,
              success:true,
-             message : "this is your shop"
+             message : "this is your shop"}
       })
   } catch (error) {
     console.log("get my shop error",error)
