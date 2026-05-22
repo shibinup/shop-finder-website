@@ -42,7 +42,7 @@ export default function Login() {
   console.log("respond from frontend is ",data)
 
     // Redirect
-    router.push("/shopowner/3")
+    router.push(`/shopowner`);
 
   } catch (error) {
     console.log(error);

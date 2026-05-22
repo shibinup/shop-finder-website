@@ -1,5 +1,5 @@
 "use client"
-import shops from '../../dummydb/shopownersDatas';
+//import shops from '../../dummydb/shopownersDatas';
 import React, { useEffect, useState } from 'react';
 import { notFound, useRouter } from 'next/navigation';
 import { 
@@ -9,11 +9,12 @@ import {
 } from 'lucide-react';
 
 import { use } from 'react';
-import Loading from '../components/loading';
+import Loading from './components/loading';
 
 //have to make more api and fetching etc
 
 export default  function ShopDetails() {
+  
   const [activeTab, setActiveTab] = useState('Overview');
 
   const[loading,setLoading] = useState(true)
@@ -27,29 +28,35 @@ useEffect(()=>{
 
     const fetchShop= async()=>{
         try {
-          
           setLoading(true)
-          const res = await fetch(`http://localhost:4000/api/shopowner/getMyshop`);
-        
-        if(!res.ok){
-            router.push("/shopowner/login")  
+          const res = await fetch(`http://localhost:4000/api/shopowner/getMyshop`, {
+      credentials: "include", // 👈 This sends cookies
+          });
+        const data = await res.json()
+        if(data.shop){
+          setCurrentshop(data.shop)
+        } else{
+          router.push("/shopowner/addshop")
+          return
         }
-        setCurrentshop(res)
         setLoading(false)
-
         } catch (error) {
-          
+          setLoading(false)
+          console.log("error si",error)
+        }finally{
+          setLoading(false)
         }
     }
     fetchShop()
     
-},[currentShop])
+},[])
 
 console.log("current shop is ",currentShop)
 
 
-if(loading&&currentShop===null) return <Loading/>
-if(currentShop===null) return notFound()
+if(loading) return <Loading/>
+if(currentShop===null) return null
+
   return (
     <div className="min-h-screen bg-[#F8F9FE] font-sans text-slate-900 pb-12">
       {/* Navigation */}
@@ -124,13 +131,27 @@ if(currentShop===null) return notFound()
             {/* Gallery */}
             <div className="bg-white rounded-3xl p-4 shadow-[0_2px_20px_rgb(0,0,0,0.02)] border border-white">
               <div className="rounded-2xl overflow-hidden h-[180px] mb-3">
-                <img src={currentShop.images[0]} alt="Main shop" className="w-full h-full object-cover" />
+                <img src={currentShop.images[0].url} alt="Main shop" className="w-full h-full object-cover" />
               </div>
+
+
+
               <div className="grid grid-cols-3 gap-3">
-                <div className="rounded-xl overflow-hidden h-[70px]"><img src={currentShop.images[1]} alt="Produce" className="w-full h-full object-cover" /></div>
-                <div className="rounded-xl overflow-hidden h-[70px]"><img src={currentShop.images[2]} alt="Aisle" className="w-full h-full object-cover" /></div>
+                <div className="rounded-xl overflow-hidden h-[70px]">
+                  {currentShop.images[1] && (
+                    <img src={currentShop.images[1].url} alt="Produce" className="w-full h-full object-cover" />
+                  )}
+                </div>
+                <div className="rounded-xl overflow-hidden h-[70px]">
+                  {currentShop.images[2] && (
+                    <img src={currentShop.images[2].url} alt="Aisle" className="w-full h-full object-cover" />
+                  )}
+                </div>
               </div>
             </div>
+
+
+            
 
             {/* Content Categories */}
             <div className="px-2 flex items-center gap-6 text-sm font-semibold text-slate-500">
