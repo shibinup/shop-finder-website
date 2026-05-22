@@ -1,6 +1,8 @@
 import express from 'express'
 import dotenv from "dotenv"
 import cors from "cors";
+import cookieParser from 'cookie-parser';
+
 
 import connectDB from "./config/db.js";
 import shopownerRoute from "./routes/shopownerRoutes.js";
@@ -16,7 +18,7 @@ app.use(cors({
   credentials: true                // Allows cookies to pass through
 }));
 app.use(express.json());
-
+app.use(cookieParser())
 app.use("/api/shopowner",shopownerRoute)
 
 app.get("/", (req, res) => {
