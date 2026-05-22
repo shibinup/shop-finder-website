@@ -350,7 +350,7 @@ const getMyshop =async(req,res)=>{
 
       return res.status(201).json({
 
-           shop :{ name : shop.name,
+           shop :{ shopName: shop.shopName,
            email :shop.email,
            category :shop.category,
            phoneNumber : shop.phoneNumber,
